@@ -18,11 +18,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include <rtthread.h>
-#include "board.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <rtthread.h>
+#include "board.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,7 +53,13 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+rt_thread_t thread1;
+void thread1_entry(void *p){
+	while(1)
+	{
+		rt_kprintf("Hello\n");
+	}
+}
 /* USER CODE END 0 */
 
 /**
@@ -65,7 +70,12 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	thread1=rt_thread_create("thread1",thread1_entry,RT_NULL,512,15,5);
+	if(thread1 != RT_NULL)//若该线程创建成功
+	{
+		rt_thread_startup(thread1);//开始运行该线程
+	}
+	else rt_kprintf("thread init failed");
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
